@@ -1,0 +1,21 @@
+repo init -u https://github.com/LineageOS/android.git -b lineage-16.0
+copy manifest to .repo/local_manifests
+repo sync
+
+source build/envsetup.sh
+
+export PATH=/home/gwj/bin:$PATH # for python as python2
+mkdir ~/ccache
+export CCACHE_DIR=~/ccache
+export USE_CCACHE=1
+export CCACHE_EXEC=/usr/bin/ccache
+ccache -M 50G
+
+lunch
+
+make clean-apache-xml
+make apache-xml
+rm -r out/target/common/obj/JAVA_LIBRARIES
+make apache-xml
+make ims-common
+brunch lineage_TB2X30L-userdebug
